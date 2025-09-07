@@ -15,6 +15,7 @@ An AI-powered Learning Management System (LMS) that provides course management, 
 - Client: React, Vite, Redux
 - Server: Node.js, Express, MongoDB (Mongoose)
 - Styling: Tailwind CSS
+- AI: OpenAI API, LangChain
 
 ## Monorepo Structure
 ```
@@ -85,6 +86,20 @@ npm run dev        # start Vite dev server
 npm run build      # build for production
 npm run preview    # preview production build
 ```
+
+## AI Integrations (OpenAI + LangChain)
+The platform leverages OpenAI and LangChain to power intelligent features:
+
+- AI Quiz Generator: Generates quiz questions from course content or prompts
+- AI Tutor: Assists learners with contextual Q&A and explanations
+
+Implementation highlights:
+- OpenAI API key is read from `server/.env` via `OPENAI_API_KEY`
+- LangChain is used for prompt templating, chaining, and retrieval workflows
+- Vector stores for retrieval live under `server/vectorstores/` (see repo)
+- Service and controller logic reside in `server/services/` and `server/controllers/`
+
+For detailed setup, prompts, and usage, see `AI_FEATURES_README.md`.
 
 ## Production Build
 ```
