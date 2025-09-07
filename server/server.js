@@ -14,9 +14,12 @@ const aiRoutes = require('./routes/aiRoutes');
 require('dotenv').config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+const CLIENT_ORIGIN = process.env.CORS_ORIGIN || '*';
+const MONGO_URI = process.env.MONGO_URI;
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: CLIENT_ORIGIN }));
 app.use(express.json());
 
 // Routes
@@ -31,11 +34,18 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/ai', aiRoutes);
 
 // DB Connection
-mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://sappynath24_db_user:JLl1vvgcuw3CWhnn@learnsphereadv.gylwfnk.mongodb.net/learningsphere?retryWrites=true&w=majority&appName=LearnSphereADV')
-.then(() => {
-  console.log('✅ MongoDB connected successfully');
-  app.listen(5000, () => console.log('🚀 Server running on port 5000'));
-})
-.catch((err) => {
-  console.log('❌ DB connection error:', err.message);
-});
+if (!MONGO_URI) {
+  console.error('❌ Missing MONGO_URI. Set it in server/.env for local or in your hosting env.');
+  process.exit(1);
+}
+
+mongoose
+  .connect(MONGO_URI)
+  .then(() => {
+    console.log('✅ MongoDB connected successfully');
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.log('❌ DB connection error:', err.message);
+    process.exit(1);
+  });

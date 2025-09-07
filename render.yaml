@@ -1,0 +1,30 @@
+specVersion: "1"
+services:
+  - type: web
+    name: learnsphere-api
+    env: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: MONGO_URI
+        value: "REPLACE_WITH_YOUR_MONGODB_URI"
+      - key: JWT_SECRET
+        value: "REPLACE_WITH_A_STRONG_SECRET"
+      - key: OPENAI_API_KEY
+        value: ""
+      - key: CORS_ORIGIN
+        value: "https://your-frontend-domain.com"
+
+  - type: static
+    name: learnsphere-client
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    autoDeploy: true
+    envVars:
+      - key: VITE_API_URL
+        value: "https://your-api-on-render.com/api"
+
