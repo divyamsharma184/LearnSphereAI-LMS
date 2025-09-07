@@ -3,7 +3,7 @@
 An AI-powered Learning Management System (LMS) that provides course management, quizzes, assignments, analytics, and integrated AI helpers for content generation and tutoring.
 
 ## Features
-- Course creation, editing, and enrollment
+- Course creation, editing, and enrollments
 - Quizzes: create, take, and review results
 - Assignments: create and submissions tracking
 - Grades and analytics dashboards
