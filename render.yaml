@@ -5,7 +5,7 @@ services:
     env: node
     rootDir: server
     plan: free
-    buildCommand: npm install
+    buildCommand: npm install --legacy-peer-deps
     startCommand: npm start
     autoDeploy: true
     envVars:
