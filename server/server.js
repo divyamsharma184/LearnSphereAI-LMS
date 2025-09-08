@@ -16,7 +16,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const CLIENT_ORIGIN = process.env.CORS_ORIGIN || '*';
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
 
 // Middleware
 app.use(cors({ origin: CLIENT_ORIGIN }));
@@ -35,12 +35,12 @@ app.use('/api/ai', aiRoutes);
 
 // DB Connection
 if (!MONGO_URI) {
-  console.error('❌ Missing MONGO_URI. Set it in server/.env for local or in your hosting env.');
+  console.error('❌ Missing MongoDB connection string. Set MONGO_URI or MONGODB_URI in your environment.');
   process.exit(1);
 }
 
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGO_URI, { serverSelectionTimeoutMS: 10000 })
   .then(() => {
     console.log('✅ MongoDB connected successfully');
     app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
