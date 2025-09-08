@@ -1,0 +1,86 @@
+LearnSphereAI-LMS — Project Overview
+
+What it is
+- A full-stack Learning Management System with AI assistance for quiz generation and tutoring.
+- Built with the MERN stack and deployed with Render (API) and Vercel (web).
+
+Core Features
+- Authentication & roles; protected routes
+- Courses: create, edit, enroll, notes, ratings
+- Quizzes: author, take, results
+- Assignments: create, submit, review
+- Grades & analytics dashboards
+- Discussions & notifications
+- AI helpers: Quiz Generator and AI Tutor (OpenAI + LangChain)
+
+Tech Stack
+- Frontend: React (Vite), React Router, Redux Toolkit, Tailwind CSS
+- Backend: Node.js, Express, MongoDB (Mongoose)
+- AI: OpenAI API, LangChain (prompt chains; retrieval ready)
+- Infra/CI: GitHub, Render (server), Vercel (client)
+
+Repository Structure (monorepo)
+- client/  -> React app
+- server/  -> Express API, controllers, models, routes, services
+- AI_FEATURES_README.md, README.md, render.yaml, client/vercel.json
+
+Environment Variables
+Server (Render or server/.env)
+- MONGO_URI=MongoDB Atlas SRV URI
+- JWT_SECRET=strong-secret
+- OPENAI_API_KEY=your-openai-key (optional)
+- CORS_ORIGIN=https://<your-frontend-domain>
+Client (Vercel or client/.env)
+- VITE_API_URL=https://<your-api-domain>/api
+
+Local Development
+- Backend: cd server && npm run dev (PORT from env or 5000)
+- Frontend: cd client && npm run dev (http://localhost:5173)
+- Set client VITE_API_URL=http://localhost:5000/api and server CORS_ORIGIN=http://localhost:5173
+
+Deployment (current setup)
+- Backend (Render)
+  - Root: server
+  - Build: npm install --legacy-peer-deps
+  - Start: npm start
+  - Env: MONGO_URI, JWT_SECRET, OPENAI_API_KEY?, CORS_ORIGIN
+- Frontend (Vercel)
+  - Root: client
+  - Build: npm run build
+  - Output: dist
+  - Env: VITE_API_URL=https://<render-api>/api
+  - SPA rewrites enabled (client/vercel.json)
+
+AI Pipeline (high level)
+- Quiz Generator: course content/prompt -> prompt template (LangChain) -> OpenAI -> structured MCQs/answers -> returned to UI
+- AI Tutor: user question + optional context -> chain (optionally retrieval) -> OpenAI -> explanation/steps -> response
+- Retrieval: repo includes vectorstores directory; production can use hosted vector DB (Pinecone/Qdrant/Weaviate) to avoid native builds
+
+Security & DX
+- JWT auth with bcrypt password hashing
+- CORS locked to frontend origin in prod
+- .env based configuration; .gitignore excludes secrets and builds
+- Axios interceptors inject token, auto-logout on 401
+
+Common Gotchas
+- MongoDB Atlas must allow Render egress IPs or 0.0.0.0/0 (test)
+- URL-encode special characters in MONGO_URI password
+- Ensure Vercel has VITE_API_URL set; otherwise calls default to localhost
+
+Links
+- Repo: https://github.com/divyamsharma184/LearnSphereAI-LMS
+- Frontend (Vercel): <your deployment URL>
+- API (Render): <your API URL>/api
+
+Roadmap Ideas
+- Replace on-disk vectors with hosted vector DB
+- Add RBAC for admin/instructor/student
+- Add tests (Jest, Vitest) and observability (logs/metrics)
+- Add email notifications and WebSocket live updates
+
+Short Resume Bullets
+- Built AI-powered LMS (React/Node/MongoDB) with courses, quizzes, assignments, grades, discussions, analytics.
+- Integrated OpenAI + LangChain for quiz generation and tutoring; designed prompt chains and retrieval-ready pipeline.
+- Deployed on Render/Vercel with env-driven config, CORS, and SPA routing fixes.
+
+
